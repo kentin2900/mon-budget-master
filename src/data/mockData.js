@@ -10,12 +10,5 @@ export const categories = [
 const now = new Date();
 const currentYearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-export const initialTransactions = [
-  { id: 1, title: 'Courses Carrefour', amount: -85.50, categoryId: '1', date: `${currentYearMonth}-10`, type: 'expense' },
-  { id: 2, title: 'Facture EDF', amount: -65.00, categoryId: '2', date: `${currentYearMonth}-08`, type: 'expense' },
-  { id: 3, title: 'Loyer Mai', amount: -800.00, categoryId: '3', date: `${currentYearMonth}-01`, type: 'expense' },
-  { id: 4, title: 'Abonnement Internet', amount: -39.99, categoryId: '5', date: `${currentYearMonth}-05`, type: 'expense' },
-  { id: 5, title: 'Bureau de Tabac', amount: -20.00, categoryId: '4', date: `${currentYearMonth}-11`, type: 'expense' },
-  { id: 6, title: 'Salaire', amount: 2500.00, categoryId: null, date: `${currentYearMonth}-01`, type: 'income' },
-];
+export const initialTransactions = [];
 

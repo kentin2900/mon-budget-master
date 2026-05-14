@@ -105,6 +105,7 @@ function App() {
             setCategories={setCategories}
             salary={salary}
             setSalary={setSalary}
+            onLogout={handleLogout}
           />
         )}
         {activeTab === 'analytics' && (

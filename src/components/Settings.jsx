@@ -1,7 +1,7 @@
 import React from 'react';
-import { Save, AlertCircle, Plus } from 'lucide-react';
+import { Save, AlertCircle, Plus, LogOut } from 'lucide-react';
 
-const Settings = ({ categories, setCategories, salary, setSalary }) => {
+const Settings = ({ categories, setCategories, salary, setSalary, onLogout }) => {
   const [newCatName, setNewCatName] = React.useState('');
   const [newCatBudget, setNewCatBudget] = React.useState('');
   const [newCatColor, setNewCatColor] = React.useState('#3b82f6');
@@ -199,7 +199,31 @@ const Settings = ({ categories, setCategories, salary, setSalary }) => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div className="glass-panel" style={{ padding: '2rem', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+        <h3 style={{ color: '#ef4444', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+          <LogOut size={20} />
+          Zone Dangereuse
+        </h3>
+        <p className="text-muted" style={{ marginBottom: '1.5rem' }}>
+          La déconnexion supprimera votre profil local ainsi que toutes vos transactions enregistrées sur cet appareil.
+        </p>
+        <button 
+          onClick={onLogout} 
+          className="glass-button" 
+          style={{ 
+            background: 'rgba(239, 68, 68, 0.1)', 
+            border: '1px solid #ef4444', 
+            color: '#ef4444',
+            boxShadow: 'none',
+            width: '100%',
+            maxWidth: '200px'
+          }}
+        >
+          Se déconnecter
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '2rem' }}>
         <button className="glass-button" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Save size={20} />
           Enregistrer les modifications

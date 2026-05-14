@@ -52,31 +52,31 @@ const TransactionsList = ({ transactions, categories, onDelete, onEdit }) => {
         </div>
       </header>
 
-      <div className="glass-panel" style={{ overflow: 'hidden' }}>
-        <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div className="glass-panel" style={{ overflow: 'hidden', width: '100%' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <table style={{ width: '100%', minWidth: '650px', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <th style={{ padding: '1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>DATE</th>
-                <th style={{ padding: '1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>DÉSIGNATION</th>
-                <th style={{ padding: '1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>CATÉGORIE</th>
-                <th style={{ padding: '1.5rem', textAlign: 'right', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>MONTANT</th>
-                <th style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>ACTIONS</th>
+                <th style={{ padding: '1rem 1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.8rem' }}>DATE</th>
+                <th style={{ padding: '1rem 1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.8rem' }}>DÉSIGNATION</th>
+                <th style={{ padding: '1rem 1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.8rem' }}>CATÉGORIE</th>
+                <th style={{ padding: '1rem 1.5rem', textAlign: 'right', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.8rem' }}>MONTANT</th>
+                <th style={{ padding: '1rem 1.5rem', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.8rem' }}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {filteredTransactions.map((tx) => (
                 <tr key={tx.id} className="transaction-row" style={{ borderBottom: '1px solid rgba(255,255,255,0.03)', transition: 'background 0.3s ease' }}>
-                  <td style={{ padding: '1.25rem 1.5rem' }}>
+                  <td style={{ padding: '1rem 1.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       <Calendar size={14} className="text-muted" />
-                      <span style={{ fontSize: '0.9rem' }}>{new Date(tx.date).toLocaleDateString('fr-FR')}</span>
+                      <span style={{ fontSize: '0.85rem' }}>{new Date(tx.date).toLocaleDateString('fr-FR')}</span>
                     </div>
                   </td>
-                  <td style={{ padding: '1.25rem 1.5rem' }}>
-                    <span style={{ fontWeight: '600', fontSize: '0.95rem' }}>{tx.title}</span>
+                  <td style={{ padding: '1rem 1.5rem' }}>
+                    <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>{tx.title}</span>
                   </td>
-                  <td style={{ padding: '1.25rem 1.5rem' }}>
+                  <td style={{ padding: '1rem 1.5rem' }}>
                     <div style={{ 
                       display: 'inline-flex', 
                       alignItems: 'center', 
@@ -92,7 +92,7 @@ const TransactionsList = ({ transactions, categories, onDelete, onEdit }) => {
                       {getCategoryName(tx.categoryId)}
                     </div>
                   </td>
-                  <td style={{ padding: '1.25rem 1.5rem', textAlign: 'right' }}>
+                  <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                     <div style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -100,7 +100,7 @@ const TransactionsList = ({ transactions, categories, onDelete, onEdit }) => {
                       gap: '0.5rem',
                       color: tx.amount > 0 ? '#10b981' : 'white',
                       fontWeight: 'bold',
-                      fontSize: '1rem'
+                      fontSize: '0.95rem'
                     }}>
                       {tx.amount > 0 ? (
                         <>
@@ -114,8 +114,8 @@ const TransactionsList = ({ transactions, categories, onDelete, onEdit }) => {
                       )}
                     </div>
                   </td>
-                  <td style={{ padding: '1.25rem 1.5rem', textAlign: 'center' }}>
-                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                  <td style={{ padding: '1rem 1.5rem', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                       <button 
                         onClick={() => setEditingTx({...tx, amount: Math.abs(tx.amount)})} 
                         style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.25rem' }}

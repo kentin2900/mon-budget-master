@@ -5,11 +5,16 @@ import {
   Search,
   Filter,
   Calendar,
-  Tag
+  Tag,
+  Edit2,
+  Trash2,
+  X,
+  Save
 } from 'lucide-react';
 
-const TransactionsList = ({ transactions, categories }) => {
+const TransactionsList = ({ transactions, categories, onDelete, onEdit }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [editingTx, setEditingTx] = React.useState(null);
 
   const filteredTransactions = transactions.filter(tx => 
     tx.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -56,6 +61,7 @@ const TransactionsList = ({ transactions, categories }) => {
                 <th style={{ padding: '1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>DÉSIGNATION</th>
                 <th style={{ padding: '1.5rem', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>CATÉGORIE</th>
                 <th style={{ padding: '1.5rem', textAlign: 'right', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>MONTANT</th>
+                <th style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-secondary)', fontWeight: '600', fontSize: '0.85rem' }}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
@@ -108,11 +114,29 @@ const TransactionsList = ({ transactions, categories }) => {
                       )}
                     </div>
                   </td>
+                  <td style={{ padding: '1.25rem 1.5rem', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                      <button 
+                        onClick={() => setEditingTx({...tx, amount: Math.abs(tx.amount)})} 
+                        style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.25rem' }}
+                        title="Modifier"
+                      >
+                        <Edit2 size={16} />
+                      </button>
+                      <button 
+                        onClick={() => onDelete(tx.id)} 
+                        style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '0.25rem' }}
+                        title="Supprimer"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
               {filteredTransactions.length === 0 && (
                 <tr>
-                  <td colSpan="4" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                  <td colSpan="5" style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
                     Aucune transaction trouvée.
                   </td>
                 </tr>
@@ -121,6 +145,79 @@ const TransactionsList = ({ transactions, categories }) => {
           </table>
         </div>
       </div>
+
+      {/* Edit Modal */}
+      {editingTx && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 2000, padding: '1rem'
+        }}>
+          <div className="glass-panel animate-fade-in" style={{ padding: '2rem', maxWidth: '400px', width: '100%' }}>
+            <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Edit2 size={20} className="text-muted" />
+              Modifier la transaction
+            </h3>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              onEdit({
+                ...editingTx,
+                amount: editingTx.type === 'expense' ? -Math.abs(parseFloat(editingTx.amount)) : Math.abs(parseFloat(editingTx.amount))
+              });
+              setEditingTx(null);
+            }} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              <div>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Désignation</label>
+                <input 
+                  type="text" className="glass-input" required
+                  value={editingTx.title} onChange={e => setEditingTx({...editingTx, title: e.target.value})}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Montant</label>
+                <div style={{ position: 'relative' }}>
+                  <input 
+                    type="number" step="0.01" className="glass-input" required
+                    style={{ paddingLeft: '2rem' }}
+                    value={editingTx.amount} onChange={e => setEditingTx({...editingTx, amount: e.target.value})}
+                  />
+                  <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }}>€</span>
+                </div>
+              </div>
+              <div>
+                <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Date</label>
+                <input 
+                  type="date" className="glass-input" required
+                  value={editingTx.date} onChange={e => setEditingTx({...editingTx, date: e.target.value})}
+                />
+              </div>
+              {editingTx.categoryId && (
+                <div>
+                  <label style={{ fontSize: '0.8rem', display: 'block', marginBottom: '0.5rem' }}>Catégorie</label>
+                  <select 
+                    className="glass-input"
+                    value={editingTx.categoryId}
+                    onChange={e => setEditingTx({...editingTx, categoryId: e.target.value})}
+                    style={{ appearance: 'none' }}
+                  >
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id} style={{ background: '#0f172a' }}>{c.name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                <button type="button" onClick={() => setEditingTx(null)} className="glass-button-outline" style={{ flex: 1 }}>Annuler</button>
+                <button type="submit" className="glass-button" style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
+                  <Save size={16} />
+                  Enregistrer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

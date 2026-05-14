@@ -57,6 +57,16 @@ function App() {
     setTransactions(prev => [newTx, ...prev]);
   };
 
+  const handleDeleteTransaction = (id) => {
+    if (window.confirm("Voulez-vous vraiment supprimer cette transaction ?")) {
+      setTransactions(prev => prev.filter(t => t.id !== id));
+    }
+  };
+
+  const handleEditTransaction = (updatedTx) => {
+    setTransactions(prev => prev.map(t => t.id === updatedTx.id ? updatedTx : t));
+  };
+
   const handleLogout = () => {
     if (window.confirm('Voulez-vous vraiment vous déconnecter ? Cela réinitialisera votre profil local.')) {
       localStorage.removeItem('bm_user');
@@ -85,6 +95,8 @@ function App() {
           <TransactionsList 
             transactions={transactions} 
             categories={categories} 
+            onDelete={handleDeleteTransaction}
+            onEdit={handleEditTransaction}
           />
         )}
         {activeTab === 'settings' && (

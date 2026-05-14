@@ -10,7 +10,8 @@ import {
   Wifi,
   Gamepad2,
   Plus,
-  RotateCcw
+  RotateCcw,
+  TrendingUp
 } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
@@ -18,7 +19,7 @@ const iconMap = {
   ShoppingCart, Zap, Home, Cigarette, Wifi, Gamepad2
 };
 
-const Dashboard = ({ transactions, categories, salary, onAddTransaction }) => {
+const Dashboard = ({ transactions, categories, salary, onAddTransaction, user }) => {
   const [selectedCategory, setSelectedCategory] = React.useState(null);
   const [newAmount, setNewAmount] = React.useState('');
   const [newTitle, setNewTitle] = React.useState('');
@@ -40,6 +41,24 @@ const Dashboard = ({ transactions, categories, salary, onAddTransaction }) => {
     value: c.spent,
     color: c.color
   }));
+
+  const today = new Date();
+  const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+  const currentDay = today.getDate();
+  const remainingDays = daysInMonth - currentDay;
+
+  const unpaidFixed = expensesByCategory
+    .filter(c => c.isFixed && c.spent < c.budget)
+    .reduce((acc, c) => acc + c.budget, 0);
+
+  const variableSpent = expensesByCategory
+    .filter(c => !c.isFixed)
+    .reduce((acc, c) => acc + c.spent, 0);
+  
+  const dailyAverage = currentDay > 0 ? variableSpent / currentDay : 0;
+  const projectedVariable = dailyAverage * remainingDays;
+
+  const projectedBalance = balance - unpaidFixed - projectedVariable;
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -156,7 +175,7 @@ const Dashboard = ({ transactions, categories, salary, onAddTransaction }) => {
       )}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2>Bonjour, Kenti 👋</h2>
+          <h2>Bonjour, {user?.name || 'Utilisateur'} 👋</h2>
           <p className="text-muted">Voici l'état de vos finances ce mois-ci.</p>
         </div>
         <button className="glass-button" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -164,6 +183,19 @@ const Dashboard = ({ transactions, categories, salary, onAddTransaction }) => {
           Nouvelle Dépense
         </button>
       </header>
+
+      {/* Prédiction Banner */}
+      <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', alignItems: 'center', gap: '1.5rem', background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1))', borderLeft: '4px solid var(--accent-primary)' }}>
+        <div style={{ padding: '0.75rem', background: 'rgba(59, 130, 246, 0.2)', borderRadius: '12px', color: '#3b82f6' }}>
+          <TrendingUp size={28} />
+        </div>
+        <div>
+          <h4 style={{ marginBottom: '0.25rem', fontSize: '1.1rem' }}>Prédiction de fin de mois</h4>
+          <p className="text-muted" style={{ fontSize: '0.95rem' }}>
+            En fonction de vos charges fixes restantes ({unpaidFixed.toFixed(2)} €) et de votre rythme actuel, votre solde estimé au {daysInMonth} du mois est de <strong style={{ color: projectedBalance >= 0 ? '#10b981' : '#ef4444', fontSize: '1.1rem' }}>{projectedBalance.toFixed(2)} €</strong>.
+          </p>
+        </div>
+      </div>
 
       {/* Top Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>

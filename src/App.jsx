@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard';
 import Sidebar from './components/Sidebar';
 import Settings from './components/Settings';
 import Onboarding from './components/Onboarding';
+import TransactionsList from './components/TransactionsList';
 import { initialTransactions, categories as initialCategories } from './data/mockData';
 
 function App() {
@@ -81,10 +82,10 @@ function App() {
           />
         )}
         {activeTab === 'transactions' && (
-          <div className="glass-panel" style={{ padding: '2rem' }}>
-            <h2>Toutes les transactions</h2>
-            <p className="text-muted">Fonctionnalité en cours de développement...</p>
-          </div>
+          <TransactionsList 
+            transactions={transactions} 
+            categories={categories} 
+          />
         )}
         {activeTab === 'settings' && (
           <Settings 

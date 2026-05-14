@@ -175,8 +175,8 @@ const Dashboard = ({ transactions, categories, salary, onAddTransaction, user })
       )}
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2>Bonjour, {user?.name || 'Utilisateur'} 👋</h2>
-          <p className="text-muted">Voici l'état de vos finances ce mois-ci.</p>
+          <h2 style={{ textTransform: 'capitalize' }}>Bonjour, {user?.name || 'Utilisateur'} 👋</h2>
+          <p className="text-muted">Situation financière pour <span style={{ color: 'var(--accent-primary)', fontWeight: '600' }}>{currentMonthName} {currentYear}</span></p>
         </div>
         <button className="glass-button" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Plus size={20} />

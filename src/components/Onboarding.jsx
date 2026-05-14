@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { User, ArrowRight, Wallet, ShieldCheck } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, Wallet, ShieldCheck } from 'lucide-react';
 
 const Onboarding = ({ onComplete }) => {
   const [name, setName] = useState('');

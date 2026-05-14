@@ -1,14 +1,9 @@
-import React from 'react';
 import { 
   ArrowUpRight, 
-  ArrowDownRight, 
   Search,
-  Filter,
   Calendar,
-  Tag,
   Edit2,
   Trash2,
-  X,
   Save
 } from 'lucide-react';
 

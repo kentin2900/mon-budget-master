@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { 
   LayoutDashboard, 
   Receipt, 
@@ -38,7 +38,6 @@ const Sidebar = ({ activeTab, setActiveTab, user, onLogout }) => {
                 alignItems: 'center',
                 gap: '1rem',
                 padding: '1rem',
-                border: 'none',
                 borderRadius: '14px',
                 background: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
                 color: isActive ? 'white' : 'var(--text-secondary)',

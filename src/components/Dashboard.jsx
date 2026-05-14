@@ -43,6 +43,8 @@ const Dashboard = ({ transactions, categories, salary, onAddTransaction, user })
   }));
 
   const today = new Date();
+  const currentMonthName = new Intl.DateTimeFormat('fr-FR', { month: 'long' }).format(today);
+  const currentYear = today.getFullYear();
   const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
   const currentDay = today.getDate();
   const remainingDays = daysInMonth - currentDay;
